@@ -86,7 +86,7 @@
     border-left: 3px solid var(--border); padding: .5rem .75rem;
     border-radius: 0 4px 4px 0; margin-top: .75rem;
   }
-  .submit-wrap { text-align: center; margin-top: 1.75rem; }
+  .submit-wrap { text-align: center; margin-top: 1.75rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; }
   button[type="submit"] {
     background: var(--accent); color: #fff; font-size: 1rem; font-weight: 700;
     letter-spacing: .04em; padding: .85rem 3rem; border: none; border-radius: 8px;
@@ -95,6 +95,14 @@
   button[type="submit"]:hover { background: #1e4a7a; }
   button[type="submit"]:active { transform: scale(.98); }
   button[type="submit"]:disabled { background: #9ab3cc; cursor: default; transform: none; }
+  #tempSaveBtn {
+    background: #fff; color: var(--accent); font-size: .85rem; font-weight: 600;
+    padding: .6rem 2rem; border: 1.5px solid var(--accent); border-radius: 8px;
+    cursor: pointer; transition: background .15s, transform .1s;
+  }
+  #tempSaveBtn:hover { background: var(--accent-light); }
+  #tempSaveBtn:active { transform: scale(.98); }
+  #tempSaveMsg { font-size: .75rem; color: var(--success); min-height: 1.2em; }
   #result {
     display: none; text-align: center; padding: 2rem; background: var(--success-light);
     border: 1px solid #b2d8c0; border-radius: var(--radius); margin-top: 1.5rem;
@@ -165,7 +173,7 @@
 
     <!-- Part 2 -->
     <div class="card">
-      <div class="card-title">Part 2 — 練習前後の疲労感（練習・試合・筋トレのある日のみ回答）</div>
+      <div class="card-title">Part 2 — 練習前後の疲労感（練習・試合のある日のみ記入）</div>
 
       <div class="field">
         <label><span class="q-num">2</span>全身の疲労感【練習前】</label>
@@ -226,7 +234,7 @@
 
     <!-- Part 3 -->
     <div class="card">
-      <div class="card-title">Part 3 — 練習・試合・筋トレ時の主観的運動強度（できるだけ練習終了後30分以内に回答）</div>
+      <div class="card-title">Part 3 — 練習・試合時の主観的運動強度（練習終了後30分以内）</div>
 
       <table class="rpe-table">
         <thead><tr><th>数値</th><th>主観的運動強度</th></tr></thead>
@@ -302,6 +310,8 @@
 
     <div class="submit-wrap">
       <button type="submit" id="submitBtn">回答を送信する</button>
+      <button type="button" id="tempSaveBtn">一時保存する</button>
+      <span id="tempSaveMsg"></span>
     </div>
 
   </form>
@@ -316,12 +326,42 @@
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzszMAxfbwjvn77gtlybK_01N56KFm9kkfinvpn2iaa0cHT0eDWnhJjCR4rVunPUTK8/exec";
 
-  document.querySelector('input[name="date"]').value =
-    new Date().toLocaleDateString('sv-SE');
+  const SAVE_KEY = 'vas_temp_save';
+  const RANGE_FIELDS = ['q1','q2','q3','q4','q5','q7','q8','q9'];
+
+  // 今日の日付をデフォルト設定（一時保存がなければ）
+  const saved = localStorage.getItem(SAVE_KEY);
+  if (saved) {
+    try {
+      const d = JSON.parse(saved);
+      Object.keys(d).forEach(k => {
+        const el = document.querySelector(`[name="${k}"]`);
+        if (!el) return;
+        el.value = d[k];
+        if (el.type === 'range') updateVal(el);
+      });
+      document.getElementById('tempSaveMsg').textContent = '一時保存データを復元しました';
+      setTimeout(() => { document.getElementById('tempSaveMsg').textContent = ''; }, 3000);
+    } catch(e) {}
+  } else {
+    document.querySelector('input[name="date"]').value =
+      new Date().toLocaleDateString('sv-SE');
+  }
 
   function updateVal(input) {
     document.getElementById('val_' + input.name).textContent = input.value;
   }
+
+  // 一時保存
+  document.getElementById('tempSaveBtn').addEventListener('click', function() {
+    const fd = new FormData(document.getElementById('vasForm'));
+    const data = {};
+    fd.forEach((v, k) => { data[k] = v; });
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    const msg = document.getElementById('tempSaveMsg');
+    msg.textContent = '✓ 一時保存しました';
+    setTimeout(() => { msg.textContent = ''; }, 3000);
+  });
 
   document.getElementById('vasForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -355,6 +395,7 @@
       result.style.display = 'block';
       title.textContent = '✓ 送信完了しました';
       msg.textContent   = 'ご回答ありがとうございます。スプレッドシートに記録されました。';
+      localStorage.removeItem(SAVE_KEY);
       this.reset();
       document.querySelector('input[name="date"]').value =
         new Date().toLocaleDateString('sv-SE');
