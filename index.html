@@ -5,259 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>疲労・コンディション モニタリング調査票</title>
 <style>
-  /* ===== リセット・基本 ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #f5f4f0;
-    --surface: #ffffff;
-    --border: #dddbd4;
-    --text: #1a1a18;
-    --muted: #6b6b66;
-    --accent: #2d5a8e;
-    --accent-light: #e8f0f9;
-    --success: #2a7a4b;
-    --success-light: #e6f5ed;
-    --danger: #c0392b;
-    --track: #dddbd4;
-    --thumb: #2d5a8e;
-    --radius: 10px;
-    --shadow: 0 1px 4px rgba(0,0,0,.08);
+    --bg: #f5f4f0; --surface: #ffffff; --border: #dddbd4;
+    --text: #1a1a18; --muted: #6b6b66; --accent: #2d5a8e;
+    --accent-light: #e8f0f9; --success: #2a7a4b; --success-light: #e6f5ed;
+    --danger: #c0392b; --track: #dddbd4; --thumb: #2d5a8e;
+    --radius: 10px; --shadow: 0 1px 4px rgba(0,0,0,.08);
   }
-
   body {
     font-family: 'Helvetica Neue', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2rem 1rem 4rem;
+    background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem 4rem;
   }
-
   .container { max-width: 680px; margin: 0 auto; }
-
-  /* ===== ヘッダー ===== */
-  .page-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  .page-header h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: .04em;
-    margin-bottom: .25rem;
-  }
-  .page-header p {
-    font-size: .8rem;
-    color: var(--muted);
-  }
-
-  /* ===== カード ===== */
+  .page-header { text-align: center; margin-bottom: 2rem; }
+  .page-header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: .04em; margin-bottom: .25rem; }
+  .page-header p { font-size: .8rem; color: var(--muted); }
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem 1.5rem 1.25rem;
-    margin-bottom: 1.25rem;
-    box-shadow: var(--shadow);
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem 1.5rem 1.25rem;
+    margin-bottom: 1.25rem; box-shadow: var(--shadow);
   }
   .card-title {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    padding-bottom: .5rem;
-    border-bottom: 1.5px solid var(--accent-light);
+    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1.5px solid var(--accent-light);
   }
-
-  /* ===== フォーム基本 ===== */
   .field { margin-bottom: 1.1rem; }
   .field:last-child { margin-bottom: 0; }
-
-  label {
-    display: block;
-    font-size: .82rem;
-    font-weight: 600;
-    margin-bottom: .35rem;
-    color: var(--text);
-  }
+  label { display: block; font-size: .82rem; font-weight: 600; margin-bottom: .35rem; color: var(--text); }
   label .q-num {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-size: .65rem;
-    font-weight: 700;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 20px;
-    margin-right: .4rem;
-    vertical-align: middle;
+    display: inline-block; background: var(--accent); color: #fff;
+    font-size: .65rem; font-weight: 700; width: 20px; height: 20px;
+    border-radius: 50%; text-align: center; line-height: 20px; margin-right: .4rem; vertical-align: middle;
   }
-
-  input[type="text"],
-  input[type="date"],
-  select {
-    width: 100%;
-    height: 38px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0 .75rem;
-    font-size: .9rem;
-    color: var(--text);
-    background: #fff;
-    outline: none;
-    transition: border-color .15s;
+  input[type="text"], input[type="date"], select {
+    width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 .75rem; font-size: .9rem; color: var(--text); background: #fff; outline: none; transition: border-color .15s;
   }
-  input[type="text"]:focus,
-  input[type="date"]:focus,
-  select:focus { border-color: var(--accent); }
-
-  /* ===== VAS スライダー ===== */
+  input[type="text"]:focus, input[type="date"]:focus, select:focus { border-color: var(--accent); }
   .vas-wrap { margin-top: .2rem; }
-
   .vas-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: .72rem;
-    color: var(--muted);
-    margin-bottom: .4rem;
-    line-height: 1.3;
+    display: flex; justify-content: space-between; font-size: .72rem;
+    color: var(--muted); margin-bottom: .4rem; line-height: 1.3;
   }
   .vas-labels span { max-width: 45%; }
   .vas-labels span:last-child { text-align: right; }
-
-  .vas-row {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-  }
-
+  .vas-row { display: flex; align-items: center; gap: .75rem; }
   input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    flex: 1;
-    height: 4px;
-    background: var(--track);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
+    -webkit-appearance: none; appearance: none; flex: 1; height: 4px;
+    background: var(--track); border-radius: 2px; outline: none; cursor: pointer;
   }
   input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--thumb);
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 1px var(--thumb);
-    cursor: pointer;
-    transition: transform .1s;
+    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--thumb); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--thumb);
+    cursor: pointer; transition: transform .1s;
   }
   input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
   input[type="range"]::-moz-range-thumb {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--thumb);
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 1px var(--thumb);
-    cursor: pointer;
+    width: 20px; height: 20px; border-radius: 50%; background: var(--thumb);
+    border: 2px solid #fff; box-shadow: 0 0 0 1px var(--thumb); cursor: pointer;
   }
-
-  .vas-value {
-    font-size: .85rem;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 32px;
-    text-align: right;
-  }
-
-  /* ===== RPE テーブル ===== */
+  .vas-value { font-size: .85rem; font-weight: 700; color: var(--accent); min-width: 32px; text-align: right; }
   .rpe-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: .78rem;
-    margin: .5rem 0 1rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
+    width: 100%; border-collapse: collapse; font-size: .78rem;
+    margin: .5rem 0 1rem; border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
   }
-  .rpe-table th {
-    background: var(--accent-light);
-    color: var(--accent);
-    padding: .4rem .6rem;
-    text-align: left;
-    font-weight: 700;
-  }
-  .rpe-table td {
-    padding: .35rem .6rem;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-  }
+  .rpe-table th { background: var(--accent-light); color: var(--accent); padding: .4rem .6rem; text-align: left; font-weight: 700; }
+  .rpe-table td { padding: .35rem .6rem; border-top: 1px solid var(--border); color: var(--muted); }
   .rpe-table tr:nth-child(even) td { background: #fafaf8; }
-
   .rpe-inputs { display: flex; gap: 1rem; flex-wrap: wrap; }
   .rpe-inputs .field { flex: 1; min-width: 120px; }
   input[type="number"] {
-    width: 100%;
-    height: 38px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0 .75rem;
-    font-size: .9rem;
-    color: var(--text);
-    background: #fff;
-    outline: none;
-    transition: border-color .15s;
+    width: 100%; height: 38px; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0 .75rem; font-size: .9rem; color: var(--text); background: #fff; outline: none; transition: border-color .15s;
   }
   input[type="number"]:focus { border-color: var(--accent); }
-
-  /* ===== 注記 ===== */
   .note {
-    font-size: .72rem;
-    color: var(--muted);
-    background: #f9f8f5;
-    border-left: 3px solid var(--border);
-    padding: .5rem .75rem;
-    border-radius: 0 4px 4px 0;
-    margin-top: .75rem;
+    font-size: .72rem; color: var(--muted); background: #f9f8f5;
+    border-left: 3px solid var(--border); padding: .5rem .75rem;
+    border-radius: 0 4px 4px 0; margin-top: .75rem;
   }
-
-  /* ===== 送信ボタン ===== */
   .submit-wrap { text-align: center; margin-top: 1.75rem; }
   button[type="submit"] {
-    background: var(--accent);
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: .04em;
-    padding: .85rem 3rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background .15s, transform .1s;
-    box-shadow: 0 2px 8px rgba(45,90,142,.25);
+    background: var(--accent); color: #fff; font-size: 1rem; font-weight: 700;
+    letter-spacing: .04em; padding: .85rem 3rem; border: none; border-radius: 8px;
+    cursor: pointer; transition: background .15s, transform .1s; box-shadow: 0 2px 8px rgba(45,90,142,.25);
   }
   button[type="submit"]:hover { background: #1e4a7a; }
   button[type="submit"]:active { transform: scale(.98); }
   button[type="submit"]:disabled { background: #9ab3cc; cursor: default; transform: none; }
-
-  /* ===== 送信後メッセージ ===== */
   #result {
-    display: none;
-    text-align: center;
-    padding: 2rem;
-    background: var(--success-light);
-    border: 1px solid #b2d8c0;
-    border-radius: var(--radius);
-    margin-top: 1.5rem;
+    display: none; text-align: center; padding: 2rem; background: var(--success-light);
+    border: 1px solid #b2d8c0; border-radius: var(--radius); margin-top: 1.5rem;
   }
   #result h2 { color: var(--success); font-size: 1.1rem; margin-bottom: .5rem; }
-  #result p  { color: var(--muted); font-size: .85rem; }
+  #result p { color: var(--muted); font-size: .85rem; }
   #result.error { background: #fdecea; border-color: #f5b7b1; }
   #result.error h2 { color: var(--danger); }
-
-  /* ===== レスポンシブ ===== */
   @media (max-width: 480px) {
     .card { padding: 1.1rem 1rem; }
     .rpe-inputs { flex-direction: column; gap: .5rem; }
@@ -267,7 +112,6 @@
 <body>
 <div class="container">
 
-  <!-- ページヘッダー -->
   <div class="page-header">
     <h1>疲労・コンディション モニタリング調査票</h1>
     <p>VAS（Visual Analogue Scale）を使って、今の状態を直感的に記入してください</p>
@@ -293,11 +137,10 @@
         <label>測定区分</label>
         <select name="timing" required>
           <option value="">-- 選択してください --</option>
-          <option value="起床時">起床時</option>
-          <option value="練習前">練習前</option>
-          <option value="練習後">練習後</option>
-          <option value="就寝前">就寝前</option>
+          <option value="練習のある日">練習のある日</option>
+          <option value="練習のない日">練習のない日</option>
         </select>
+        <div class="note">※ 試合の日、筋トレの日も練習のある日に該当します</div>
       </div>
     </div>
 
@@ -318,13 +161,18 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Part 2 -->
+    <div class="card">
+      <div class="card-title">Part 2 — 練習前後の疲労感（練習・試合・筋トレのある日のみ回答）</div>
 
       <div class="field">
-        <label><span class="q-num">2</span>ストレス度（今、どのくらいストレスを感じますか）</label>
+        <label><span class="q-num">2</span>全身の疲労感【練習前】</label>
         <div class="vas-wrap">
           <div class="vas-labels">
-            <span>まったく感じない</span>
-            <span>非常に強く感じる</span>
+            <span>まったく疲れていない</span>
+            <span>これ以上ないほど疲れている</span>
           </div>
           <div class="vas-row">
             <input type="range" name="q2" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
@@ -334,7 +182,7 @@
       </div>
 
       <div class="field">
-        <label><span class="q-num">3</span>全身の疲労感</label>
+        <label><span class="q-num">3</span>全身の疲労感【練習後】</label>
         <div class="vas-wrap">
           <div class="vas-labels">
             <span>まったく疲れていない</span>
@@ -348,11 +196,11 @@
       </div>
 
       <div class="field">
-        <label><span class="q-num">4</span>筋肉痛・筋のだるさ（DOMS）</label>
+        <label><span class="q-num">4</span>下肢（脚）の疲労感【練習前】</label>
         <div class="vas-wrap">
           <div class="vas-labels">
-            <span>まったくない</span>
-            <span>これ以上ないほど強い</span>
+            <span>まったく疲れていない</span>
+            <span>これ以上ないほど疲れている</span>
           </div>
           <div class="vas-row">
             <input type="range" name="q4" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
@@ -361,15 +209,8 @@
         </div>
       </div>
 
-      <div class="note">※ Q1〜Q4 は Hooper Index に対応します（合計スコアが高いほどコンディション不良）</div>
-    </div>
-
-    <!-- Part 2 -->
-    <div class="card">
-      <div class="card-title">Part 2 — 練習前後の疲労感（セッションごと）</div>
-
       <div class="field">
-        <label><span class="q-num">5</span>全身の疲労感【練習前】</label>
+        <label><span class="q-num">5</span>下肢（脚）の疲労感【練習後】</label>
         <div class="vas-wrap">
           <div class="vas-labels">
             <span>まったく疲れていない</span>
@@ -381,39 +222,11 @@
           </div>
         </div>
       </div>
-
-      <div class="field">
-        <label><span class="q-num">6</span>全身の疲労感【練習後】</label>
-        <div class="vas-wrap">
-          <div class="vas-labels">
-            <span>まったく疲れていない</span>
-            <span>これ以上ないほど疲れている</span>
-          </div>
-          <div class="vas-row">
-            <input type="range" name="q6" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
-            <span class="vas-value" id="val_q6">50</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label><span class="q-num">7</span>下肢（脚）の疲労感【練習後】</label>
-        <div class="vas-wrap">
-          <div class="vas-labels">
-            <span>まったく疲れていない</span>
-            <span>これ以上ないほど疲れている</span>
-          </div>
-          <div class="vas-row">
-            <input type="range" name="q7" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
-            <span class="vas-value" id="val_q7">50</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Part 3 -->
     <div class="card">
-      <div class="card-title">Part 3 — セッション主観的運動強度（練習終了後30分以内）</div>
+      <div class="card-title">Part 3 — 練習・試合・筋トレ時の主観的運動強度（できるだけ練習終了後30分以内に回答）</div>
 
       <table class="rpe-table">
         <thead><tr><th>数値</th><th>主観的運動強度</th></tr></thead>
@@ -430,12 +243,12 @@
 
       <div class="rpe-inputs">
         <div class="field">
-          <label><span class="q-num">8</span>RPE（0〜10）</label>
-          <input type="number" name="q8_rpe" min="0" max="10" step="0.5" placeholder="例：7">
+          <label><span class="q-num">6</span>RPE（0〜10）</label>
+          <input type="number" name="q6_rpe" min="0" max="10" step="0.5" placeholder="例：7">
         </div>
         <div class="field">
           <label>運動時間（分）</label>
-          <input type="number" name="q8_min" min="0" max="600" step="1" placeholder="例：90">
+          <input type="number" name="q6_min" min="0" max="600" step="1" placeholder="例：90">
         </div>
       </div>
     </div>
@@ -445,11 +258,39 @@
       <div class="card-title">Part 4 — 就寝時コンディション（毎晩・就寝前）</div>
 
       <div class="field">
-        <label><span class="q-num">9</span>ストレス度（今、どのくらいストレスを感じますか）</label>
+        <label><span class="q-num">7</span>ストレス度（今、どのくらいストレスを感じますか）</label>
         <div class="vas-wrap">
           <div class="vas-labels">
             <span>まったく感じない</span>
             <span>非常に強く感じる</span>
+          </div>
+          <div class="vas-row">
+            <input type="range" name="q7" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
+            <span class="vas-value" id="val_q7">50</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label><span class="q-num">8</span>全身の疲労感</label>
+        <div class="vas-wrap">
+          <div class="vas-labels">
+            <span>まったく疲れていない</span>
+            <span>これ以上ないほど疲れている</span>
+          </div>
+          <div class="vas-row">
+            <input type="range" name="q8" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
+            <span class="vas-value" id="val_q8">50</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label><span class="q-num">9</span>筋肉痛・筋のだるさ（DOMS）</label>
+        <div class="vas-wrap">
+          <div class="vas-labels">
+            <span>まったくない</span>
+            <span>これ以上ないほど強い</span>
           </div>
           <div class="vas-row">
             <input type="range" name="q9" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
@@ -457,68 +298,31 @@
           </div>
         </div>
       </div>
-
-      <div class="field">
-        <label><span class="q-num">10</span>全身の疲労感</label>
-        <div class="vas-wrap">
-          <div class="vas-labels">
-            <span>まったく疲れていない</span>
-            <span>これ以上ないほど疲れている</span>
-          </div>
-          <div class="vas-row">
-            <input type="range" name="q10" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
-            <span class="vas-value" id="val_q10">50</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label><span class="q-num">11</span>筋肉痛・筋のだるさ（DOMS）</label>
-        <div class="vas-wrap">
-          <div class="vas-labels">
-            <span>まったくない</span>
-            <span>これ以上ないほど強い</span>
-          </div>
-          <div class="vas-row">
-            <input type="range" name="q11" min="0" max="100" value="50" step="1" oninput="updateVal(this)">
-            <span class="vas-value" id="val_q11">50</span>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- 送信 -->
     <div class="submit-wrap">
       <button type="submit" id="submitBtn">回答を送信する</button>
     </div>
 
   </form>
 
-  <!-- 結果メッセージ -->
   <div id="result">
     <h2 id="resultTitle"></h2>
     <p id="resultMsg"></p>
   </div>
 
-</div><!-- /container -->
+</div>
 
 <script>
-  // ============================================================
-  // ▼▼▼ GAS デプロイ後の URL をここに貼り付けてください ▼▼▼
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzszMAxfbwjvn77gtlybK_01N56KFm9kkfinvpn2iaa0cHT0eDWnhJjCR4rVunPUTK8/exec";
-  // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-  // ============================================================
 
-  // 今日の日付をデフォルト設定
   document.querySelector('input[name="date"]').value =
-    new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD形式
+    new Date().toLocaleDateString('sv-SE');
 
-  // スライダー値の表示更新
   function updateVal(input) {
     document.getElementById('val_' + input.name).textContent = input.value;
   }
 
-  // フォーム送信
   document.getElementById('vasForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -530,25 +334,23 @@
     const data = {};
     fd.forEach((v, k) => { data[k] = v; });
 
-    // VAS値を数値に変換
-    ['q1','q2','q3','q4','q5','q6','q7','q9','q10','q11'].forEach(k => {
+    ['q1','q2','q3','q4','q5','q7','q8','q9'].forEach(k => {
       if (data[k] !== undefined && data[k] !== '') data[k] = Number(data[k]);
     });
-    if (data.q8_rpe !== '') data.q8_rpe = Number(data.q8_rpe);
-    if (data.q8_min !== '') data.q8_min = Number(data.q8_min);
+    if (data.q6_rpe !== '') data.q6_rpe = Number(data.q6_rpe);
+    if (data.q6_min !== '') data.q6_min = Number(data.q6_min);
 
     const result = document.getElementById('result');
     const title  = document.getElementById('resultTitle');
     const msg    = document.getElementById('resultMsg');
 
     try {
-      const res = await fetch(SCRIPT_URL, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify(data)
-        mode: 'no-cors' // GAS の CORS 制約を回避
+        body: JSON.stringify(data),
+        mode: 'no-cors'
       });
 
-      // no-cors では res.ok が取れないため成功と見なす
       result.className = '';
       result.style.display = 'block';
       title.textContent = '✓ 送信完了しました';
@@ -556,7 +358,7 @@
       this.reset();
       document.querySelector('input[name="date"]').value =
         new Date().toLocaleDateString('sv-SE');
-      ['q1','q2','q3','q4','q5','q6','q7','q9','q10','q11'].forEach(name => {
+      ['q1','q2','q3','q4','q5','q7','q8','q9'].forEach(name => {
         const el = document.querySelector(`input[name="${name}"]`);
         if (el) { el.value = 50; updateVal(el); }
       });
